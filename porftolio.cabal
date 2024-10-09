@@ -2,39 +2,17 @@ cabal-version:      3.0
 name:               porftolio
 version:            0.1.0.0
 synopsis:           My Portfolio page
--- description:
 homepage:           https://isaac025.com/home.html
 license:            BSD-3-Clause
 license-file:       LICENSE
 author:             Isaac Lopez
 maintainer:         isaac.lopez@upr.edu
--- copyright:
 category:           Web
 build-type:         Simple
-extra-doc-files:    CHANGELOG.md
--- extra-source-files:
+extra-doc-files:    README.md
 
 common warnings
     ghc-options: -Wall
-
-library
-    import:           warnings
-    exposed-modules:  
-        Pages
-        Server
-        PagesCss
-    -- other-modules:
-    default-extensions:
-        DataKinds
-        TypeOperators
-    build-depends:    base ^>=4.17.2.1
-                    , servant
-                    , servant-server
-                    , servant-lucid
-                    , lucid
-                    , clay
-    hs-source-dirs:   src
-    default-language: Haskell2010
 
 executable porftolio
     import:           warnings
@@ -46,4 +24,31 @@ executable porftolio
         porftolio
 
     hs-source-dirs:   app
+    default-language: Haskell2010
+
+library
+    import:           warnings
+    exposed-modules:  
+        Pages
+        Server
+        PagesCss
+        PortMonad
+    default-extensions:
+        DataKinds
+        TypeOperators
+        TypeApplications
+        OverloadedStrings
+        DeriveFunctor
+        DerivingVia
+        GeneralizedNewtypeDeriving
+    build-depends:    base ^>=4.17.2.1
+                    , servant
+                    , servant-server
+                    , servant-lucid
+                    , lucid
+                    , clay
+                    , text
+                    , mtl
+                    , warp
+    hs-source-dirs:   src
     default-language: Haskell2010
