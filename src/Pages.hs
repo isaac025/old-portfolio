@@ -1,5 +1,6 @@
 module Pages where
 
+import Blog
 import Clay (Css)
 import Data.Text (Text)
 import Lucid
@@ -53,3 +54,10 @@ contactPage = base $ do
             img_ [class_ "icon-link", src_ "/static/images/twitch.svg"]
         a_ [href_ "mailto:isaac.lopez@upr.edu"] $ do
             img_ [class_ "icon-link", src_ "/static/images/mail.svg"]
+
+blogPage :: [Blog] -> Text -> [Text] -> Html ()
+blogPage [] = base $ do
+    h2_ [] "so empty"
+blogPage xs = base $ do
+    h2_ [] "Blogs"
+    toHtml xs

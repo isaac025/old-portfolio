@@ -2,6 +2,8 @@ module Server where
 
 import Configuration (Config (paths, url), loadConfig)
 import Data.Text (Text)
+import Control.Monad.IO.Class
+import Db.Blog (getBlogs)
 import Lucid (Html)
 import Network.Wai.Handler.Warp (run)
 import Pages
@@ -13,15 +15,16 @@ type ListingAPI name =
     Get '[HTML] (Html ())
         :<|> Capture name Text :> Get '[HTML] (Html ())
 
-type BlogAPI = "blogs" :> ListingAPI "blogname"
+type BlogAPI = "blogs" :> Get '[HTML] (Html ())
 
 type API =
     "home" :> Get '[HTML] (Html ())
         :<|> "contact" :> Get '[HTML] (Html ())
         :<|> "static" :> Raw
+        :<|> BlogAPI
 
 server :: ServerT API Port
-server = homeHandler :<|> contactHandler :<|> imageHandler -- :<|> blogsHandler :<|> projectsHandler :<|> researchHandler  :<|> contactHandler
+server = homeHandler :<|> contactHandler :<|> imageHandler :<|> blogsHandler -- :<|> projectsHandler :<|> researchHandler  :<|> contactHandler
   where
     homeHandler :: Port (Html ())
     homeHandler = do
@@ -36,16 +39,15 @@ server = homeHandler :<|> contactHandler :<|> imageHandler -- :<|> blogsHandler 
         c <- grab @Config
         pure (contactPage (url c) (paths c))
 
-{-
     blogsHandler :: ServerT BlogAPI Port
-    blogsHandler = undefined {- blogListingHandler :<|> blogNameHandler -}
+    blogsHandler = blogListingHandler -- :<|> blogNameHandler
       where
         blogListingHandler :: Port (Html ())
-        blogListingHandler = undefined
-
-        blogNameHandler :: Text -> Port (Html ())
-        blogNameHandler = undefined
--}
+        blogListingHandler = do
+            c <- grab @Config
+            l <- getBlogs
+            liftIO $ print l
+            pure (blogPage l (url c) (paths c))
 
 api :: Proxy API
 api = Proxy

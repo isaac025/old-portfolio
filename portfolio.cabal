@@ -31,10 +31,19 @@ library
         Server
         PagesCss
         PortMonad
+        Blog
+        Error
+        Db.Blog
+        Db.Functions
         Configuration
     default-extensions:
         DataKinds
         MultiParamTypeClasses
+        DerivingStrategies 
+        ImportQualifiedPost
+        InstanceSigs
+        ConstraintKinds
+        FlexibleContexts
         RecordWildCards
         TypeOperators
         TypeApplications
@@ -44,7 +53,9 @@ library
         GeneralizedNewtypeDeriving
         FlexibleInstances
         ScopedTypeVariables
+        StandaloneDeriving
         RankNTypes
+        QuasiQuotes
     build-depends:    base ^>=4.17.2.1
                     , servant
                     , servant-server

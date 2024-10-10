@@ -1,10 +1,13 @@
 module PortMonad where
 
 import Configuration
+import Control.Exception (throwIO)
+import Control.Monad.Error
 import Control.Monad.Reader
 import Data.Pool (Pool, defaultPoolConfig, newPool)
 import Data.Text.Encoding (encodeUtf8)
 import Database.PostgreSQL.Simple (Connection, close, connectPostgreSQL)
+import Error
 import Servant.Server (Handler)
 
 type DbPool = Pool Connection
@@ -16,6 +19,9 @@ data Env = Env
 
 newtype Port a = Port (ReaderT Env Handler a)
     deriving (Functor, Applicative, Monad, MonadReader Env, MonadIO)
+
+instance MonadError AppError Port where
+    throwError = liftIO . throwIO . AppException
 
 runPort :: Env -> Port a -> Handler a
 runPort c (Port a) = runReaderT a c
