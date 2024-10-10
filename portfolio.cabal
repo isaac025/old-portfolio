@@ -31,22 +31,33 @@ library
         Server
         PagesCss
         PortMonad
+        Configuration
     default-extensions:
         DataKinds
+        MultiParamTypeClasses
+        RecordWildCards
         TypeOperators
         TypeApplications
         OverloadedStrings
         DeriveFunctor
         DerivingVia
         GeneralizedNewtypeDeriving
+        FlexibleInstances
+        ScopedTypeVariables
+        RankNTypes
     build-depends:    base ^>=4.17.2.1
                     , servant
                     , servant-server
                     , servant-lucid
+                    , aeson
                     , lucid
                     , clay
                     , text
                     , mtl
                     , warp
+                    , yaml
+                    , resource-pool
+                    , postgresql-simple
+                    , postgresql-simple-named
     hs-source-dirs:   src
     default-language: Haskell2010
