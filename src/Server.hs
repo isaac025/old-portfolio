@@ -18,7 +18,8 @@ type BlogAPI = "blogs" :> ListingAPI "blogname"
 
 type API =
     "home" :> Get '[HTML] (Html ())
-        :<|> "images" :> Raw
+        :<|> "contact" :> Get '[HTML] (Html ())
+        :<|> "static" :> Raw
 
 {-        :<|> ProjectsAPI
         :<|> ResearchAPI
@@ -26,14 +27,18 @@ type API =
         :<|> "contact" :> Get '[HTML] (Html ())
 -}
 server :: ServerT API Port
-server = homeHandler :<|> imageHandler -- :<|> projectsHandler :<|> researchHandler :<|> blogsHandler :<|> contactHandler
+server = homeHandler :<|> contactHandler :<|> imageHandler -- :<|> projectsHandler :<|> researchHandler :<|> blogsHandler :<|> contactHandler
   where
     homeHandler :: Port (Html ())
     homeHandler = pure homePage
 
     imageHandler :: ServerT Raw Port
-    imageHandler = serveDirectoryFileServer "./images"
+    imageHandler = serveDirectoryFileServer "./static"
 
+    contactHandler :: Port (Html ())
+    contactHandler = pure contactPage
+
+{-
     projectsHandler :: Server ProjectsAPI
     projectsHandler = projectsListingHandler :<|> projectNameHandler
       where
@@ -60,9 +65,7 @@ server = homeHandler :<|> imageHandler -- :<|> projectsHandler :<|> researchHand
 
         blogNameHandler :: Text -> Handler (Html ())
         blogNameHandler = undefined
-
-    contactHandler :: Handler (Html ())
-    contactHandler = undefined
+-}
 
 api :: Proxy API
 api = Proxy
