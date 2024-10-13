@@ -1,19 +1,14 @@
-{-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE FlexibleInstances #-}
 
 module Blog where
 
 import Data.Text (Text)
-import Database.PostgreSQL.Simple (FromRow, ToRow)
-import Database.PostgreSQL.Simple.FromField (FromField)
 import GHC.Generics (Generic)
 import Lucid
 
 newtype Title = Title {unTitle :: Text}
     deriving (Generic, Show, Eq)
-    deriving newtype (FromField)
-
-deriving instance ToRow Title
 
 data Blog = Blog
     { bid :: Int
@@ -21,7 +16,6 @@ data Blog = Blog
     , content :: Text
     }
     deriving (Generic, Show, Eq)
-    deriving anyclass (FromRow)
 
 instance ToHtml Blog where
     toHtml (Blog _ (Title t) _) =

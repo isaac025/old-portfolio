@@ -1,4 +1,4 @@
-module PagesCss (
+module BaseCss (
     cssList,
     renderCss,
 ) where
@@ -24,6 +24,8 @@ cssList =
     , boxLinkClass
     , iconLinkClass
     , textLinkClass
+    , ulStyle
+    , ulListStyle
     ]
 
 renderCss :: Css -> Text
@@ -80,6 +82,15 @@ navItemHover =
         color "#00cc00"
         transform $ scale 1.1 1.1
 
+ulStyle :: Css
+ulStyle =
+    ul ? do
+        listStylePosition inside
+
+ulListStyle :: Css
+ulListStyle =
+    ul # "marker" ? do
+        color "#00cc00"
 boxClass :: Css
 boxClass =
     ".box" ? do
