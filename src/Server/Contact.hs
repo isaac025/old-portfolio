@@ -13,8 +13,8 @@ type ContactAPI = "contact" :> Get '[HTML] (Html ())
 
 contactServer :: (MonadIO m) => ServerT ContactAPI (AppT m)
 contactServer = do
-    cfg <- ask
-    pure $ contactPage (url cfg) (paths cfg)
+    ae <- asks configApp
+    pure $ contactPage (url ae) (paths ae)
 
 contactApi :: Proxy ContactAPI
 contactApi = Proxy

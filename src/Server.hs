@@ -1,7 +1,6 @@
 module Server where
 
 import App
-import Network.Wai.Handler.Warp (run)
 import Servant
 import Server.Contact
 import Server.Home
@@ -25,10 +24,3 @@ app cfg =
     let hServer = appToHomeServer cfg
         cServer = appToContactServer cfg
      in serve api (hServer :<|> cServer :<|> files) -- :<|> fileServer)
-
-runApp :: IO ()
-runApp = do
-    l <- loadConfig
-    case l of
-        Left m -> print m
-        Right c -> run 8080 (app c)

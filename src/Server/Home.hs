@@ -13,8 +13,8 @@ type HomeAPI = "home" :> Get '[HTML] (Html ())
 
 homeServer :: (MonadIO m) => ServerT HomeAPI (AppT m)
 homeServer = do
-    cfg <- ask
-    pure $ homePage (url cfg) (paths cfg)
+    ae <- asks configApp
+    pure $ homePage (url ae) (paths ae)
 
 homePage :: Text -> [Text] -> Html ()
 homePage =
