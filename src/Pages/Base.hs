@@ -24,4 +24,4 @@ base h = do
     navItem :: Text -> Html ()
     navItem x = a_ [href_ $ "http://ihld.xyz" <> "/" <> x, class_ "nav-item"] (toHtml $ "[ " <> x <> " ]")
 
-    links = ["home", "contact"]
+    links = ["", "contact"]
