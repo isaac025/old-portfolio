@@ -22,6 +22,6 @@ base h = do
                     h
   where
     navItem :: Text -> Html ()
-    navItem x = a_ [href_ $ "https:ihld.xyz" <> "/" <> x, class_ "nav-item"] (toHtml $ "[ " <> x <> " ]")
+    navItem x = a_ [href_ $ "http://ihld.xyz" <> "/" <> x, class_ "nav-item"] (toHtml $ "[ " <> x <> " ]")
 
     links = ["home", "contact"]
