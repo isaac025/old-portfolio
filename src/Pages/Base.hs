@@ -1,15 +1,15 @@
-module Base where
+module Pages.Base where
 
-import BaseCss (cssList, renderCss)
 import Clay (Css)
 import Data.Text (Text)
 import Lucid
+import Pages.CSS (cssList, renderCss)
 
 cssToHtml :: [Css] -> Html ()
 cssToHtml css = style_ [type_ "text/css"] (foldMap renderCss css)
 
-base :: Html () -> Text -> [Text] -> Html ()
-base h u xs = do
+base :: Html () -> Html ()
+base h = do
     doctypehtml_ $ do
         html_ $ do
             head_ $ do
@@ -18,8 +18,10 @@ base h u xs = do
             body_ $ do
                 do
                     nav_ [] $ do
-                        foldMap navItem xs
+                        foldMap navItem links
                     h
   where
     navItem :: Text -> Html ()
-    navItem x = a_ [href_ $ u <> "/" <> x, class_ "nav-item"] (toHtml $ "[ " <> x <> " ]")
+    navItem x = a_ [href_ $ "https:ihld.xyz" <> "/" <> x, class_ "nav-item"] (toHtml $ "[ " <> x <> " ]")
+
+    links = ["home", "contact"]

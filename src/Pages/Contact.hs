@@ -1,25 +1,9 @@
-module Server.Contact where
+module Pages.Contact where
 
-import App
-import Base
-import Control.Monad.IO.Class
-import Control.Monad.Reader
-import Data.Text (Text)
 import Lucid
-import Servant
-import Servant.HTML.Lucid (HTML)
+import Pages.Base
 
-type ContactAPI = "contact" :> Get '[HTML] (Html ())
-
-contactServer :: (MonadIO m) => ServerT ContactAPI (AppT m)
-contactServer = do
-    ae <- asks configApp
-    pure $ contactPage (url ae) (paths ae)
-
-contactApi :: Proxy ContactAPI
-contactApi = Proxy
-
-contactPage :: Text -> [Text] -> Html ()
+contactPage :: Html ()
 contactPage = base $ do
     div_ [class_ "box"] $ do
         div_ [class_ "box-header"] $ do

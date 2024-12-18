@@ -1,4 +1,4 @@
-module BaseCss (
+module Pages.CSS (
     cssList,
     renderCss,
 ) where

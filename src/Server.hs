@@ -1,26 +1,33 @@
 module Server where
 
-import App
+import Lucid (Html)
+import Network.Wai.Handler.Warp (run)
+import Pages (contactPage, homePage)
 import Servant
-import Server.Contact
-import Server.Home
+import Servant.HTML.Lucid (HTML)
+
+type HomeAPI = Get '[HTML] (Html ())
+
+type ContactAPI = "contact" :> Get '[HTML] (Html ())
+
+type MusicAPI = "music" :> Get '[HTML] (Html ())
 
 type API = HomeAPI :<|> ContactAPI :<|> "static" :> Raw
 
-appToHomeServer :: Config -> Server HomeAPI
-appToHomeServer cfg = hoistServer homeApi (runAppT cfg) homeServer
+server :: Server API
+server = homeHandler :<|> contactHandler :<|> serveDirectoryFileServer "static"
+  where
+    homeHandler :: Handler (Html ())
+    homeHandler = pure homePage
 
-appToContactServer :: Config -> Server ContactAPI
-appToContactServer cfg = hoistServer contactApi (runAppT cfg) contactServer
+    contactHandler :: Handler (Html ())
+    contactHandler = pure contactPage
 
 api :: Proxy API
 api = Proxy
 
-files :: Server Raw
-files = serveDirectoryFileServer "static"
+app :: Application
+app = serve api server
 
-app :: Config -> Application
-app cfg =
-    let hServer = appToHomeServer cfg
-        cServer = appToContactServer cfg
-     in serve api (hServer :<|> cServer :<|> files) -- :<|> fileServer)
+runApp :: IO ()
+runApp = run 8080 app
